@@ -58,6 +58,30 @@ services:
       - "mundial.region=lisbonne"
 
   # ─────────────────────────────────────────────────────────
+  # 🧠 CERVEAU IA — Détection d'anomalies + explications LLM
+  # ─────────────────────────────────────────────────────────
+  ai-brain:
+    build: ./ai-brain
+    container_name: mundial-ai-brain
+    ports: ["8004:8004"]
+    env_file:
+      - .env
+    environment:
+      - SERVICE_NAME=ai-brain
+      - PROMETHEUS_URL=http://prometheus:9090
+    restart: unless-stopped
+    networks: [mundial-net]
+    depends_on:
+      - prometheus
+      - billetterie
+      - streaming
+      - stade
+    labels:
+      - "mundial.service=ai-brain"
+      - "mundial.component=anomaly-detection-llm"
+
+      
+  # ─────────────────────────────────────────────────────────
   # 📊 PROMETHEUS — Collecteur de métriques
   # ─────────────────────────────────────────────────────────
   prometheus:
