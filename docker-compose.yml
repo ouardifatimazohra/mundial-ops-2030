@@ -1,0 +1,35 @@
+# ═══════════════════════════════════════════════════════════════
+# 🏆 MUNDIAL-OPS 2030 — Orchestrateur Docker Compose
+# Démarrage de tous les services avec une seule commande :
+#   docker compose up
+# ═══════════════════════════════════════════════════════════════
+
+services:
+
+  # ─────────────────────────────────────────────────────────
+  # 🎫 BILLETTERIE — Casablanca 🇲🇦
+  # ─────────────────────────────────────────────────────────
+  billetterie:
+    build: ./services/billetterie
+    container_name: mundial-billetterie
+    ports:
+      - "8001:8001"
+    environment:
+      - SERVICE_NAME=billetterie
+      - REGION=casablanca
+      - COUNTRY=morocco
+    restart: unless-stopped
+    networks:
+      - mundial-net
+    labels:
+      - "mundial.service=billetterie"
+      - "mundial.region=casablanca"
+      - "mundial.country=morocco"
+
+# ─────────────────────────────────────────────────────────────
+# Réseau interne pour la communication entre services
+# ─────────────────────────────────────────────────────────────
+networks:
+  mundial-net:
+    driver: bridge
+    name: mundial-network
