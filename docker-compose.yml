@@ -1,7 +1,7 @@
 # ═══════════════════════════════════════════════════════════════
 # 🏆 MUNDIAL-OPS 2030 — Orchestrateur Docker Compose
-# Démarrage de tous les services avec une seule commande :
-#   docker compose up
+# 3 microservices répartis sur Maroc, Espagne, Portugal
+# Démarrage : docker compose up
 # ═══════════════════════════════════════════════════════════════
 
 services:
@@ -25,6 +25,46 @@ services:
       - "mundial.service=billetterie"
       - "mundial.region=casablanca"
       - "mundial.country=morocco"
+
+  # ─────────────────────────────────────────────────────────
+  # 📺 STREAMING — Madrid 🇪🇸
+  # ─────────────────────────────────────────────────────────
+  streaming:
+    build: ./services/streaming
+    container_name: mundial-streaming
+    ports:
+      - "8002:8002"
+    environment:
+      - SERVICE_NAME=streaming
+      - REGION=madrid
+      - COUNTRY=spain
+    restart: unless-stopped
+    networks:
+      - mundial-net
+    labels:
+      - "mundial.service=streaming"
+      - "mundial.region=madrid"
+      - "mundial.country=spain"
+
+  # ─────────────────────────────────────────────────────────
+  # 🏟️ STADE — Lisbonne 🇵🇹
+  # ─────────────────────────────────────────────────────────
+  stade:
+    build: ./services/stade
+    container_name: mundial-stade
+    ports:
+      - "8003:8003"
+    environment:
+      - SERVICE_NAME=stade
+      - REGION=lisbonne
+      - COUNTRY=portugal
+    restart: unless-stopped
+    networks:
+      - mundial-net
+    labels:
+      - "mundial.service=stade"
+      - "mundial.region=lisbonne"
+      - "mundial.country=portugal"
 
 # ─────────────────────────────────────────────────────────────
 # Réseau interne pour la communication entre services
