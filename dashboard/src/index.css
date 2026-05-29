@@ -1,0 +1,99 @@
+/* ═══════════════════════════════════════════════════════════════
+   🎨 MUNDIAL-OPS 2030 — Styles globaux
+   ═══════════════════════════════════════════════════════════════ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Polices Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* Reset léger */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-bg-primary text-text-primary font-sans;
+    margin: 0;
+    min-height: 100vh;
+  }
+  
+  /* Scrollbar custom — style salle de contrôle */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-secondary;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border-default rounded;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-border-accent;
+  }
+}
+
+/* Composants réutilisables */
+@layer components {
+  .glass-card {
+    @apply bg-bg-secondary border border-border-default rounded-lg;
+    @apply backdrop-blur-sm;
+  }
+  
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+    @apply hover:border-border-accent hover:bg-bg-tertiary;
+  }
+  
+  .label-section {
+    @apply text-xs text-gold-400 font-mono tracking-widest uppercase;
+  }
+  
+  .text-mono {
+    @apply font-mono;
+  }
+  
+  /* Effet "terminal" pour les codes/données */
+  .terminal-text {
+    @apply font-mono text-sm text-info;
+  }
+  
+  /* Bouton primaire FIFA */
+  .btn-primary {
+    @apply bg-gold-400 text-bg-primary px-4 py-2 rounded;
+    @apply font-medium text-sm;
+    @apply hover:bg-gold-300 transition-colors duration-200;
+  }
+  
+  /* Bouton secondaire */
+  .btn-secondary {
+    @apply bg-transparent text-text-secondary border border-border-default;
+    @apply px-4 py-2 rounded text-sm;
+    @apply hover:border-border-accent hover:text-text-primary transition-all duration-200;
+  }
+  
+  /* Indicateur de statut */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+  
+  .status-ok {
+    @apply bg-ok shadow-[0_0_8px_rgba(93,202,165,0.6)];
+  }
+  
+  .status-warning {
+    @apply bg-warning shadow-[0_0_8px_rgba(244,200,66,0.6)];
+  }
+  
+  .status-critical {
+    @apply bg-critical shadow-[0_0_8px_rgba(255,59,48,0.6)] animate-pulse-soft;
+  }
+}
