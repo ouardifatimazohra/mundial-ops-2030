@@ -5,6 +5,7 @@
 import Header from './components/Header'
 import SystemStatus from './components/SystemStatus'
 import RegionCard from './components/RegionCard'
+import GibraltarMap from './components/GibraltarMap'
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         {/* 🧠 État du Cerveau IA */}
         <SystemStatus />
         
-        {/* 🌍 3 Régions hôtes (Maroc · Espagne · Portugal) */}
+        {/* 🌍 3 Régions hôtes */}
         <section>
           <div className="flex items-center gap-3 mb-4">
             <h2 className="label-section">Régions hôtes · Trafic temps réel</h2>
@@ -24,59 +25,47 @@ function App() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            {/* 🇲🇦 Casablanca · Billetterie */}
             <RegionCard
-              countryCode="MA"
-              countryName="Maroc"
-              city="Casablanca"
-              serviceName="Billetterie"
-              serviceIcon="🎫"
+              countryCode="MA" countryName="Maroc" city="Casablanca"
+              serviceName="Billetterie" serviceIcon="🎫"
               promqlQuery="sum(rate(billetterie_tickets_sold_total[30s]))"
               promqlTotal="sum(billetterie_tickets_sold_total)"
-              unit="ventes/sec"
-              primaryColor="#006233"
-              accentColor="#5DCAA5"
+              unit="ventes/sec" primaryColor="#006233" accentColor="#5DCAA5"
             />
-            
-            {/* 🇪🇸 Madrid · Streaming */}
             <RegionCard
-              countryCode="ES"
-              countryName="Espagne"
-              city="Madrid"
-              serviceName="Streaming"
-              serviceIcon="📺"
+              countryCode="ES" countryName="Espagne" city="Madrid"
+              serviceName="Streaming" serviceIcon="📺"
               promqlQuery="sum(rate(streaming_starts_total[30s]))"
               promqlTotal="sum(streaming_starts_total)"
-              unit="streams/sec"
-              primaryColor="#AA151B"
-              accentColor="#F4C842"
+              unit="streams/sec" primaryColor="#AA151B" accentColor="#F4C842"
             />
-            
-            {/* 🇵🇹 Lisbonne · Stade */}
             <RegionCard
-              countryCode="PT"
-              countryName="Portugal"
-              city="Lisbonne"
-              serviceName="Stade IoT"
-              serviceIcon="🏟️"
+              countryCode="PT" countryName="Portugal" city="Lisbonne"
+              serviceName="Stade IoT" serviceIcon="🏟️"
               promqlQuery="sum(rate(stade_sensor_readings_total[30s]))"
               promqlTotal="sum(stade_sensor_readings_total)"
-              unit="capteurs/sec"
-              primaryColor="#046A38"
-              accentColor="#97C459"
+              unit="capteurs/sec" primaryColor="#046A38" accentColor="#97C459"
             />
-            
           </div>
+        </section>
+        
+        {/* 🗺️ Carte du Détroit de Gibraltar */}
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="label-section">Topologie · Vue géographique</h2>
+            <div className="flex-1 h-px bg-border-default" />
+          </div>
+          
+          <GibraltarMap />
         </section>
         
         {/* Placeholder pour les composants à venir */}
         <div className="glass-card p-8 text-center">
           <p className="text-text-secondary text-sm">
-            🚧 Carte Détroit Gibraltar · Panel Cerveau IA · Graphique temps réel
+            🚧 Panel Cerveau IA · Graphique temps réel
           </p>
           <p className="text-text-muted text-xs mt-2">
-            Composants à venir dans les prochaines minutes
+            Prochains composants
           </p>
         </div>
         
