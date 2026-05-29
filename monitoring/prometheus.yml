@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════════
+# 📊 MUNDIAL-OPS 2030 — Configuration Prometheus
+# Collecte les métriques des 3 microservices toutes les 5 secondes
+# ═══════════════════════════════════════════════════════════════
+
+global:
+  scrape_interval: 5s          # Fréquence de collecte
+  evaluation_interval: 5s
+  scrape_timeout: 4s
+
+# Labels appliqués à toutes les métriques
+  external_labels:
+    project: 'mundial-ops-2030'
+    environment: 'production-simulation'
+
+# ─────────────────────────────────────────────────────────────
+# Cibles à scraper (les /metrics de chaque service)
+# ─────────────────────────────────────────────────────────────
+scrape_configs:
+
+  # 🎫 Billetterie — Casablanca
+  - job_name: 'billetterie'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['billetterie:8001']
+        labels:
+          service: 'billetterie'
+          region: 'casablanca'
+          country: 'morocco'
+          flag: '🇲🇦'
+
+  # 📺 Streaming — Madrid
+  - job_name: 'streaming'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['streaming:8002']
+        labels:
+          service: 'streaming'
+          region: 'madrid'
+          country: 'spain'
+          flag: '🇪🇸'
+
+  # 🏟️ Stade — Lisbonne
+  - job_name: 'stade'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['stade:8003']
+        labels:
+          service: 'stade'
+          region: 'lisbonne'
+          country: 'portugal'
+          flag: '🇵🇹'
+
+  # 📡 Prometheus lui-même (méta-monitoring)
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

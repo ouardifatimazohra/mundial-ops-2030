@@ -1,0 +1,16 @@
+# ═══════════════════════════════════════════════════════════════
+# 🎨 Grafana — Chargement automatique des dashboards
+# ═══════════════════════════════════════════════════════════════
+
+apiVersion: 1
+
+providers:
+  - name: 'MUNDIAL-OPS 2030 Dashboards'
+    orgId: 1
+    folder: 'MUNDIAL-OPS 2030'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

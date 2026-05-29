@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════
 # 🏆 MUNDIAL-OPS 2030 — Orchestrateur Docker Compose
-# 3 microservices répartis sur Maroc, Espagne, Portugal
+# 3 microservices + Stack Observabilité (Prometheus + Grafana)
 # Démarrage : docker compose up
 # ═══════════════════════════════════════════════════════════════
 
@@ -12,19 +12,16 @@ services:
   billetterie:
     build: ./services/billetterie
     container_name: mundial-billetterie
-    ports:
-      - "8001:8001"
+    ports: ["8001:8001"]
     environment:
       - SERVICE_NAME=billetterie
       - REGION=casablanca
       - COUNTRY=morocco
     restart: unless-stopped
-    networks:
-      - mundial-net
+    networks: [mundial-net]
     labels:
       - "mundial.service=billetterie"
       - "mundial.region=casablanca"
-      - "mundial.country=morocco"
 
   # ─────────────────────────────────────────────────────────
   # 📺 STREAMING — Madrid 🇪🇸
@@ -32,19 +29,16 @@ services:
   streaming:
     build: ./services/streaming
     container_name: mundial-streaming
-    ports:
-      - "8002:8002"
+    ports: ["8002:8002"]
     environment:
       - SERVICE_NAME=streaming
       - REGION=madrid
       - COUNTRY=spain
     restart: unless-stopped
-    networks:
-      - mundial-net
+    networks: [mundial-net]
     labels:
       - "mundial.service=streaming"
       - "mundial.region=madrid"
-      - "mundial.country=spain"
 
   # ─────────────────────────────────────────────────────────
   # 🏟️ STADE — Lisbonne 🇵🇹
@@ -52,22 +46,69 @@ services:
   stade:
     build: ./services/stade
     container_name: mundial-stade
-    ports:
-      - "8003:8003"
+    ports: ["8003:8003"]
     environment:
       - SERVICE_NAME=stade
       - REGION=lisbonne
       - COUNTRY=portugal
     restart: unless-stopped
-    networks:
-      - mundial-net
+    networks: [mundial-net]
     labels:
       - "mundial.service=stade"
       - "mundial.region=lisbonne"
-      - "mundial.country=portugal"
+
+  # ─────────────────────────────────────────────────────────
+  # 📊 PROMETHEUS — Collecteur de métriques
+  # ─────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: mundial-prometheus
+    ports: ["9090:9090"]
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks: [mundial-net]
+    depends_on:
+      - billetterie
+      - streaming
+      - stade
+
+  # ─────────────────────────────────────────────────────────
+  # 🎨 GRAFANA — Dashboards visuels
+  # ─────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: mundial-grafana
+    ports: ["3000:3000"]
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=mundial2030
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/mundial-ops-dashboard.json
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks: [mundial-net]
+    depends_on:
+      - prometheus
 
 # ─────────────────────────────────────────────────────────────
-# Réseau interne pour la communication entre services
+# Volumes persistants
+# ─────────────────────────────────────────────────────────────
+volumes:
+  prometheus-data:
+  grafana-data:
+
+# ─────────────────────────────────────────────────────────────
+# Réseau interne
 # ─────────────────────────────────────────────────────────────
 networks:
   mundial-net:
