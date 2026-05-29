@@ -6,6 +6,7 @@ import Header from './components/Header'
 import SystemStatus from './components/SystemStatus'
 import RegionCard from './components/RegionCard'
 import GibraltarMap from './components/GibraltarMap'
+import AIBrainPanel from './components/AIBrainPanel'
 
 function App() {
   return (
@@ -59,15 +60,8 @@ function App() {
           <GibraltarMap />
         </section>
         
-        {/* Placeholder pour les composants à venir */}
-        <div className="glass-card p-8 text-center">
-          <p className="text-text-secondary text-sm">
-            🚧 Panel Cerveau IA · Graphique temps réel
-          </p>
-          <p className="text-text-muted text-xs mt-2">
-            Prochains composants
-          </p>
-        </div>
+        {/* 🧠 PANEL CERVEAU IA — Le moment WOW */}
+        <AIBrainPanel />
         
       </main>
     </div>
