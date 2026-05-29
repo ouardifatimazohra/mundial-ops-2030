@@ -64,11 +64,11 @@ services:
     build: ./ai-brain
     container_name: mundial-ai-brain
     ports: ["8004:8004"]
-    env_file:
-      - .env
     environment:
       - SERVICE_NAME=ai-brain
       - PROMETHEUS_URL=http://prometheus:9090
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
     restart: unless-stopped
     networks: [mundial-net]
     depends_on:
@@ -80,7 +80,7 @@ services:
       - "mundial.service=ai-brain"
       - "mundial.component=anomaly-detection-llm"
 
-      
+
   # ─────────────────────────────────────────────────────────
   # 📊 PROMETHEUS — Collecteur de métriques
   # ─────────────────────────────────────────────────────────

@@ -98,6 +98,13 @@ jobs:
       - name: 📥 Checkout du code
         uses: actions/checkout@v4
 
+      - name: 🔐 Créer un .env factice pour la validation
+        run: |
+          echo "# Fichier .env factice pour CI uniquement" > .env
+          echo "GROQ_API_KEY=ci_dummy_key_not_real" >> .env
+          echo "GROQ_MODEL=llama-3.3-70b-versatile" >> .env
+          echo "✅ .env factice créé pour la validation CI"
+
       - name: 🔍 Validation syntaxe docker-compose.yml
         run: |
           docker compose config --quiet
@@ -107,6 +114,10 @@ jobs:
         run: |
           echo "Services définis dans la stack :"
           docker compose config --services
+
+      - name: 🧹 Nettoyage du .env factice
+        if: always()
+        run: rm -f .env
 
 
   # ═════════════════════════════════════════════════════════════
