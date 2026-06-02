@@ -93,6 +93,10 @@ export default {
         'flow':          'flow 2s linear infinite',
         'typewriter':    'typewriter 2s steps(40, end)',
         'blink':         'blink 1s step-end infinite',
+        'flash-alert':  'flash-alert 1.2s ease-out',
+        'shake-subtle': 'shake-subtle 0.4s ease-in-out',
+        'glow-pulse':   'glow-pulse 2s ease-in-out infinite',
+        'scale-in':     'scale-in 0.4s ease-out',
       },
       
       keyframes: {
@@ -134,6 +138,29 @@ export default {
           '50%': { opacity: '0' },
         },
       },
+    },
+
+    'blink': {
+          '50%': { opacity: '0' },
+    },
+
+    'flash-alert': {
+          '0%':   { backgroundColor: 'rgba(255, 59, 48, 0)' },
+          '30%':  { backgroundColor: 'rgba(255, 59, 48, 0.15)' },
+          '100%': { backgroundColor: 'rgba(255, 59, 48, 0)' },
+    },
+    'shake-subtle': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%':      { transform: 'translateX(-2px)' },
+          '75%':      { transform: 'translateX(2px)' },
+    },
+    'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(212, 175, 55, 0)' },
+          '50%':      { boxShadow: '0 0 24px 4px rgba(212, 175, 55, 0.3)' },
+    },
+    'scale-in': {
+          '0%':   { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
     },
   },
   plugins: [],

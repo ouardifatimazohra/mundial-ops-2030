@@ -54,6 +54,14 @@ export default function AIAlertCard({ alert, fastMode, onToggleFast, onApprove, 
 // ═══════════════════════════════════════════════════════════
 function AlertContent({ alert, fastMode, onToggleFast, onApprove, onIgnore }) {
   const explanation = alert.ai_explanation || 'Analyse non disponible'
+  const [isNew, setIsNew] = useState(false)
+  
+  // 🎬 Animation flash quand une nouvelle alerte arrive
+  useEffect(() => {
+    setIsNew(true)
+    const timer = setTimeout(() => setIsNew(false), 1200)
+    return () => clearTimeout(timer)
+  }, [alert.id])
   
   // Effet typewriter
   const { displayed, isComplete } = useTypewriter(explanation, {
@@ -70,7 +78,7 @@ function AlertContent({ alert, fastMode, onToggleFast, onApprove, onIgnore }) {
   
   return (
     <div 
-      className="glass-card overflow-hidden animate-fade-in"
+      className={`glass-card overflow-hidden animate-scale-in transition-all duration-300 ${isNew ? 'new-alert-flash' : ''}`}
       style={{ 
         borderLeft: `4px solid ${colors.border}`,
       }}
